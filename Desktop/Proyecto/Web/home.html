@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeLaFinca - Inicio</title>
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+
+    <nav>
+        <a href="/">DeLaFinca Store</a>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/about/">Acerca de</a></li>
+            {% if user.is_authenticated %}
+                <li><span>Hola, {{ user.username }}</span></li>
+                <li><a href="/logout/">Cerrar Sesión</a></li>
+            {% else %}
+                <li><a href="/login/">Iniciar Sesión</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Nuestros Productos</h1>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="product-grid">
+            {% for product in products %}
+                <div class="product-card">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.description|truncatewords:15 }}</p>
+                    <span class="price">${{ product.price }}</span>
+                </div>
+            {% empty %}
+                <p>No hay productos disponibles en este momento.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

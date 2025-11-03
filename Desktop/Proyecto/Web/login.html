@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeLaFinca - Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <a href="/">DeLaFinca Store</a>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/about/">Acerca de</a></li>
+            <li><a href="/login/">Iniciar Sesión</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <form class="login-form" action="/login/" method="POST">
+            <h2>Iniciar Sesión</h2>
+            
+            {% csrf_token %}
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <label for="username">Usuario:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
