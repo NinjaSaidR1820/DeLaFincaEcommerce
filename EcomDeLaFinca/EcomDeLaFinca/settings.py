@@ -13,6 +13,7 @@ SECRET_KEY = 'django-insecure-_rcu(#wudyygfui*z_8ig5*8c&r2ugj1o=o=-3$7ni9^j*i%ik
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
 ALLOWED_HOSTS = []
 
 
@@ -51,6 +52,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart',
+                
             ],
         },
     },
