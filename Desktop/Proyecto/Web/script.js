@@ -21,3 +21,29 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const carousel = document.querySelector('.product-carousel');
+    const leftArrow = document.querySelector('.left-arrow');
+    const rightArrow = document.querySelector('.right-arrow');
+    
+    if (!carousel || !leftArrow || !rightArrow) {
+        return;
+    }
+
+    const scrollAmount = 330; 
+
+    rightArrow.addEventListener('click', function() {
+        carousel.scrollBy({
+            left: scrollAmount, 
+            behavior: 'smooth' 
+        });
+    });
+
+    leftArrow.addEventListener('click', function() {
+        carousel.scrollBy({
+            left: -scrollAmount, 
+            behavior: 'smooth'
+        });
+    });
+});

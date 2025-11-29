@@ -4,18 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeLaFinca - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <nav>
-        <a href="/">DeLaFinca Store</a>
-        <ul>
-            <li><a href="/">Inicio</a></li>
-            <li><a href="/about/">Acerca de</a></li>
-            <li><a href="/login/">Iniciar Sesión</a></li>
-        </ul>
-    </nav>
+<nav>
+    <a href="{% url 'home' %}" class="logo">
+        DeLaFinca <span class="logo-tagline">Store</span>
+    </a>
+    
+    <ul>
+        <li><a href="{% url 'home' %}">Inicio</a></li>
+        <li><a href="{% url 'about' %}">Acerca de</a></li> 
+        <li><a href="{% url 'view_cart' %}">Carrito</a></li> 
+        
+        {% if user.is_authenticated %}
+            <li><span>Hola, {{ user.username }}</span></li>
+            <li><a href="{% url 'logout' %}">Cerrar Sesión</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
+        {% endif %}
+    </ul>
+</nav>
 
     <div class="container">
         <form class="login-form" action="/login/" method="POST">

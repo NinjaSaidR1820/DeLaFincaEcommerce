@@ -4,34 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeLaFinca - Inicio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css"> </head>
 <body>
 
-    <nav>
-        <a href="/">DeLaFinca Store</a>
-        <ul>
-            <li><a href="/">Inicio</a></li>
-            <li><a href="/about/">Acerca de</a></li>
-            {% if user.is_authenticated %}
-                <li><span>Hola, {{ user.username }}</span></li>
-                <li><a href="/logout/">Cerrar Sesión</a></li>
-            {% else %}
-                <li><a href="/login/">Iniciar Sesión</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-
-    <div class="container">
-        <h1>Nuestros Productos</h1>
-
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
+<nav>
+    <a href="{% url 'home' %}" class="logo">
+        DeLaFinca <span class="logo-tagline">Store</span>
+    </a>
+    
+    <ul>
+        <li><a href="{% url 'home' %}">Inicio</a></li>
+        <li><a href="{% url 'about' %}">Acerca de</a></li> 
+        <li><a href="{% url 'view_cart' %}">Carrito</a></li> 
+        
+        {% if user.is_authenticated %}
+            <li><span>Hola, {{ user.username }}</span></li>
+            <li><a href="{% url 'logout' %}">Cerrar Sesión</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
         {% endif %}
+    </ul>
+</nav>
 
+<div class="container">
+    <section class="carousel-section">
+        <h2>¡¡Nuestros Favoritos del Mes!!</h2>
+        
+        <div class="carousel-container"> 
+            
+            <button class="nav-arrow left-arrow" aria-label="Anterior">&#10094;</button>
+        
+            <div class="product-carousel">
+                
+                <div class="carousel-item">
+                    <img src="https://static.wixstatic.com/media/5559fb_d4135e9458144c19b36ea87333bc7059~mv2.jpg/v1/fill/w_816,h_1056,al_c,q_85,usm_0.66_1.00_0.01/5559fb_d4135e9458144c19b36ea87333bc7059~mv2.jpg" alt="Ometepe" class="carousel-image">
+                    <div class="carousel-info">
+                        <h3>Aroma y sabor unico</h3>
+                        <p class="carousel-tagline"> Sabor con balance perfecto.</p>
+                        <span class="carousel-price">$10</span>
+                        <a href="#" class="btn-carousel-view">Ver Producto</a>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="https://static.wixstatic.com/media/5559fb_a69de781b17e4dc48004244cd16f5360~mv2.jpg/v1/fill/w_816,h_1056,al_c,q_85,usm_0.66_1.00_0.01/5559fb_a69de781b17e4dc48004244cd16f5360~mv2.jpg" alt="Maragogipe" class="carousel-image">
+                    <div class="carousel-info">
+                        <h3>Fragancia floral</h3>
+                        <p class="carousel-tagline"> Ganador taza de excelencia 2024.</p>
+                        <span class="carousel-price">$40</span>
+                        <a href="#" class="btn-carousel-view">Ver Producto</a>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="https://static.wixstatic.com/media/5559fb_208e67857eb449678a680795fe8a7d90~mv2.jpg/v1/fill/w_816,h_1056,al_c,q_85,usm_0.66_1.00_0.01/5559fb_208e67857eb449678a680795fe8a7d90~mv2.jpg" alt="Cerro Negro" class="carousel-image">
+                    <div class="carousel-info">
+                        <h3>Sabores intensos</h3>
+                        <p class="carousel-tagline"> Sabor naturalmente intenso del chocolate oscuro</p>
+                        <span class="carousel-price">$10</span>
+                        <a href="#" class="btn-carousel-view">Ver Producto</a>
+                    </div>
+                </div>
+                
+                <div class="carousel-item">
+                    <img src="https://static.wixstatic.com/media/5559fb_15c8020b9b5c4e15ad3cdae4dfa68def~mv2.jpg/v1/fill/w_816,h_1056,al_c,q_85,usm_0.66_1.00_0.01/5559fb_15c8020b9b5c4e15ad3cdae4dfa68def~mv2.jpg" alt="House Blend" class="carousel-image">
+                    <div class="carousel-info">
+                        <h3>Mezcla especial de la casa.</h3>
+                        <p class="carousel-tagline"> Sabor profundo con matices de cacao, frutos rojos y tropicales</p>
+                        <span class="carousel-price">$40</span>
+                        <a href="#" class="btn-carousel-view">Ver Producto</a>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="nav-arrow right-arrow" aria-label="Siguiente">&#10095;</button>
+            
+        </div>
+    </section>
+    </div>
+
+    <hr class="section-separator">
+
+    <h1>Nuestros Productos</h1>
         <div class="product-grid">
             {% for product in products %}
                 <div class="product-card">
@@ -39,13 +97,17 @@
                     <h3>{{ product.name }}</h3>
                     <p>{{ product.description|truncatewords:15 }}</p>
                     <span class="price">${{ product.price }}</span>
+                    <form action="{% url 'add_to_cart' product.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-add-to-cart">Añadir al Carrito</button>
+                    </form>
                 </div>
             {% empty %}
                 <p>No hay productos disponibles en este momento.</p>
             {% endfor %}
+            </div>
         </div>
-    </div>
 
-    <script src="script.js"></script>
-</body>
+        <script src="{% static 'script.js' %}"></script>
+    </body>
 </html>

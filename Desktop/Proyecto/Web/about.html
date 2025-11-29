@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeLaFinca - Nuestra Historia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+ <nav>
+    <a href="{% url 'home' %}" class="logo">
+        DeLaFinca <span class="logo-tagline">Store</span>
+    </a>
+    
+    <ul>
+        <li><a href="{% url 'home' %}">Inicio</a></li>
+        <li><a href="{% url 'about' %}">Acerca de</a></li> 
+        <li><a href="{% url 'view_cart' %}">Carrito</a></li> 
+        
+        {% if user.is_authenticated %}
+            <li><span>Hola, {{ user.username }}</span></li>
+            <li><a href="{% url 'logout' %}">Cerrar Sesión</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Iniciar Sesión</a></li>
+        {% endif %}
+    </ul>
+</nav>
+
+    <div class="container">
+        
+        <header class="about-header">
+            <h1>Nuestra Historia, Taza a Taza</h1>
+            <p>Desde la tierra hasta tu mesa, el compromiso con la calidad.</p>
+        </header>
+
+        <section class="about-section story-section">
+            <div class="story-content">
+                <h2>El Origen de DeLaFinca</h2>
+                <p>La marca registrada DELAFINCA, inicio a operar formalmente en el año 2012 controlando todo el proceso de producción. procesamiento y preparación del café, desde la siembra de la semilla hasta la preparación de la tasa.</p>
+                <p>Para nosotros, el café no es solo una bebida, es una experiencia y un respeto por la tierra y las manos que trabajan incansablemente.</p>
+            </div>
+            <img src="https://logosnicas.com/wp-content/uploads/2022/10/delafinca.png" alt="Imagen de la Finca de Café DeLaFinca" class="story-image">
+        </section>
+
+       <section class="about-section mission-section">
+    <h2>Nuestra Misión y Compromiso</h2>
+    <p>En DeLaFinca Store, nuestra misión va más allá de servir una taza de café. Nos comprometemos a ser un motor de bienestar y orgullo desde el origen hasta su mesa, manteniendo tres pilares fundamentales:</p>
+    
+    <div class="mission-points">
+        <div>
+            <h3>Excelencia de Tostado</h3>
+            <p>Cultivamos y seleccionamos solo granos 100% Arábica de especialidad, tostados artesanalmente para garantizar un perfil de sabor puro y galardonado.</p>
+        </div>
+        <div>
+            <h3>Impacto Sostenible</h3>
+            <p>Promovemos la sostenibilidad y las prácticas responsables en nuestras fincas, asegurando la prosperidad del ecosistema y el futuro de nuestro café.</p>
+        </div>
+        <div>
+            <h3>Orgullo Comunitario</h3>
+            <p>Trabajamos de la mano con nuestros caficultores, buscando generar bienestar, desarrollo y orgullo en cada persona que forma parte de la cadena DeLaFinca.</p>
+        </div>
+    </div>
+</section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
