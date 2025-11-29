@@ -1,16 +1,32 @@
-from urllib import request
-from django.shortcuts import redirect, render
-from .models import Product, Category, Order, Customer  
+from django.shortcuts import render, redirect
+from .models import Product, Category
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm
+from .forms import SignUpForm, UpdateUserForm
 from django import forms
+
+def update_user(request):
+	if request.user.is_authenticated:
+		current_user = User.objects.get(id=request.user.id)
+		user_form = UpdateUserForm(request.POST or None, instance=current_user)
+
+		if user_form.is_valid():
+			user_form.save()
+
+			login(request, current_user)
+			messages.success(request, "User Has Been Updated!!")
+			return redirect('home')
+		return render(request, "update_user.html", {'user_form':user_form})
+	else:
+		messages.success(request, "You Must Be Logged In To Access That Page!!")
+		return redirect('home')
+
 
 def category_summary(request):
 	categories = Category.objects.all()
-	return render(request, 'category_summary.html', {"categories":categories})
+	return render(request, 'category_summary.html', {"categories":categories})	
 
 def category(request, foo):
 	# Replace Hyphens with Spaces
@@ -32,35 +48,36 @@ def product(request,pk):
 
 
 def home(request):
-    products = Product.objects.all()
-    return render(request, 'home.html', {'products': products})
+	products = Product.objects.all()
+	return render(request, 'home.html', {'products':products})
 
 
 def about(request):
-    return render(request, 'about.html', {})
+	return render(request, 'about.html', {})	
 
 def login_user(request):
-    if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
+	if request.method == "POST":
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(request, username=username, password=password)
+		if user is not None:
+			login(request, user)
+			messages.success(request, ("You Have Been Logged In!"))
+			return redirect('home')
+		else:
+			messages.success(request, ("There was an error, please try again..."))
+			return redirect('login')
 
-        if user is not None:
-            login(request, user)
-            messages.success(request, "Login successful!")
-            return redirect('home')
-        else:
-            messages.error(request, "Invalid UserName or Password. Please try again.")
-            return redirect('login')
-    else:
-        return render(request, 'login.html', {})
-    
+	else:
+		return render(request, 'login.html', {})
 
 
 def logout_user(request):
-    logout(request)
-    messages.success(request, "You have been logged out.")
-    return redirect('home')
+	logout(request)
+	messages.success(request, ("You have been logged out...Thanks for stopping by..."))
+	return redirect('home')
+
+
 
 def register_user(request):
 	form = SignUpForm()
@@ -73,12 +90,10 @@ def register_user(request):
 			# log in user
 			user = authenticate(username=username, password=password)
 			login(request, user)
-			messages.success(request, ("Usuario Correctamente Registrado!"))
+			messages.success(request, ("You Have Registered Successfully!! Welcome!"))
 			return redirect('home')
 		else:
-			messages.success(request, ("Hubo un error en el registro. Intente de nuevo..."))
+			messages.success(request, ("Whoops! There was a problem Registering, please try again..."))
 			return redirect('register')
 	else:
 		return render(request, 'register.html', {'form':form})
-
-
