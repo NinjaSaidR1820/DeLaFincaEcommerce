@@ -39,7 +39,7 @@
 
                     {% if searched %}
                     {% for product in searched %}
-                    {% if product.is_on_sale %}
+                    {% if product.is_sale %}
 
                     <div class="col mb-5">
                         <div class="card h-100">
@@ -104,10 +104,8 @@
 
                     {% endif %}
                     {% endfor %}
+                    {% endif %}
                 </div>
-
-
-                {% endif %}
 
                 <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
             </div>
